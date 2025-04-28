@@ -2,65 +2,73 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class SimpleParkingSystemMini {
+public class SimpleParkingSystem {
 
-    private static List<String> parkingSpots = new ArrayList<>();
+    private static List<String> parkingSpots;
     private static int capacity;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter parking lot capacity: ");
+        System.out.print("Enter the capacity of the parking lot: ");
         capacity = scanner.nextInt();
-        scanner.nextLine();
+        scanner.nextLine(); // Consume the newline
 
+        parkingSpots = new ArrayList<>(capacity);
         for (int i = 0; i < capacity; i++) {
             parkingSpots.add("Free");
         }
 
         while (true) {
-            System.out.println("\n1. Park Vehicle\n2. Remove Vehicle\n3. Exit");
-            System.out.print("Choice: ");
+            System.out.println("\nParking Management System Menu:");
+            System.out.println("1. Park Vehicle");
+            System.out.println("2. Remove Vehicle");
+            System.out.println("3. Exit");
+            System.out.print("Enter your choice: ");
             int choice = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); // Consume the newline
 
-            if (choice == 1) {
-                parkVehicle(scanner);
-            } else if (choice == 2) {
-                removeVehicle(scanner);
-            } else if (choice == 3) {
-                System.out.println("Goodbye!");
-                break;
-            } else {
-                System.out.println("Invalid choice.");
+            switch (choice) {
+                case 1:
+                    parkVehicle(scanner);
+                    break;
+                case 2:
+                    removeVehicle(scanner);
+                    break;
+                case 3:
+                    System.out.println("Exiting system. Goodbye!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
             }
         }
-        scanner.close();
     }
 
     private static void parkVehicle(Scanner scanner) {
         System.out.print("Enter vehicle number: ");
-        String vehicle = scanner.nextLine();
+        String vehicleNumber = scanner.nextLine();
+
         for (int i = 0; i < capacity; i++) {
             if (parkingSpots.get(i).equals("Free")) {
-                parkingSpots.set(i, vehicle);
-                System.out.println("Parked at spot " + (i + 1));
+                parkingSpots.set(i, vehicleNumber);
+                System.out.println("Vehicle " + vehicleNumber + " parked at Spot " + (i + 1) + ".");
                 return;
             }
         }
-        System.out.println("Parking Full.");
+        System.out.println("Parking lot is full.");
     }
 
     private static void removeVehicle(Scanner scanner) {
         System.out.print("Enter vehicle number to remove: ");
-        String vehicle = scanner.nextLine();
+        String vehicleNumber = scanner.nextLine();
+
         for (int i = 0; i < capacity; i++) {
-            if (parkingSpots.get(i).equals(vehicle)) {
+            if (parkingSpots.get(i).equals(vehicleNumber)) {
                 parkingSpots.set(i, "Free");
-                System.out.println("Vehicle removed from spot " + (i + 1));
+                System.out.println("Vehicle " + vehicleNumber + " removed from Spot " + (i + 1) + ".");
                 return;
             }
         }
-        System.out.println("Vehicle not found.");
+        System.out.println("Vehicle with number " + vehicleNumber + " not found in the parking lot.");
     }
 }
